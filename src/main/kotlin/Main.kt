@@ -7,6 +7,10 @@ import java.lang.System.exit
 
 private val logger = KotlinLogging.logger {}
 
+fun main() {
+    runMenu()
+}
+
 fun mainMenu(): Int {
     print(""" 
          > ----------------------------------
@@ -59,6 +63,3 @@ fun exitApp(){
     exit(0)
 }
 
-fun main() {
-    runMenu()
-}
