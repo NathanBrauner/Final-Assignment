@@ -2,7 +2,10 @@ package ie.setu
 
 import ie.setu.utils.readIntNotNull
 import ie.setu.utils.readNextInt
+import io.github.oshai.kotlinlogging.KotlinLogging
 import java.lang.System.exit
+
+private val logger = KotlinLogging.logger {}
 
 fun mainMenu(): Int {
     print(""" 
@@ -36,19 +39,19 @@ fun runMenu() {
 }
 
 fun addCar(){
-    println("You chose Add Car")
+   logger.info { "addCar() function invoked" }
 }
 
 fun listCars(){
-    println("You chose List Cars")
+   logger.info { "listCars() function invoked" }
 }
 
 fun updateCar(){
-    println("You chose Update Car")
+   logger.info { "updateCar() function invoked"}
 }
 
 fun deleteCar(){
-    println("You chose Delete Car")
+    logger.info { "deleteCar() function invoked" }
 }
 
 fun exitApp(){
