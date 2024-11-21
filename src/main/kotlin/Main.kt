@@ -1,5 +1,7 @@
 package ie.setu
 
+import ie.setu.utils.readIntNotNull
+import ie.setu.utils.readNextInt
 import java.lang.System.exit
 
 fun mainMenu(): Int {
@@ -16,7 +18,7 @@ fun mainMenu(): Int {
          > |   0) Exit                      |
          > ----------------------------------
          > ==>> """.trimMargin(">"))
-    return readlnOrNull()?.toIntOrNull() ?: -1
+    return readNextInt(" > ==>>")
 }
 
 fun runMenu() {
