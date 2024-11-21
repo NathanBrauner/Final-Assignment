@@ -21,4 +21,18 @@ fun listAllCars(): String {
         }
         listOfCars
     }
+
+    fun numberOfCars(): Int{
+        return cars.size
+    }
+
+    fun findCar(index: Int): Car? {
+        return if (isValidListIndex(index, cars)) {
+            cars[index]
+        } else null
+    }
+
+    fun isValidListIndex(index: Int, list: List<Any>): Boolean {
+        return (index >= 0 && index < list.size)
+    }
 }
