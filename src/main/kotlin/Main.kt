@@ -1,11 +1,15 @@
-package ie.setu
 
-import ie.setu.utils.readIntNotNull
+
+import controllers.CarAPI
 import ie.setu.utils.readNextInt
+import ie.setu.utils.readNextLine
 import io.github.oshai.kotlinlogging.KotlinLogging
-import java.lang.System.exit
+import models.Car
+import kotlin.system.exitProcess
+
 
 private val logger = KotlinLogging.logger {}
+private val carAPI = CarAPI()
 
 fun main() {
     runMenu()
@@ -43,11 +47,20 @@ fun runMenu() {
 }
 
 fun addCar(){
-   logger.info { "addCar() function invoked" }
+    val carMake = readNextLine("Enter the make for the car: ")
+    val carEngine = readNextInt("Enter the size of the engine:  ")
+    val carPrice = readNextLine("Enter a price for the car: ")
+    val isAdded = carAPI.add(Car(carMake, carEngine, carPrice, false))
+
+    if (isAdded) {
+        println("Added Successfully")
+    } else {
+        println("Add Failed")
+    }
 }
 
 fun listCars(){
-   logger.info { "listCars() function invoked" }
+   println(carAPI.listAllCars())
 }
 
 fun updateCar(){
@@ -60,6 +73,6 @@ fun deleteCar(){
 
 fun exitApp(){
     println("Exiting...bye")
-    exit(0)
+    exitProcess(0)
 }
 
