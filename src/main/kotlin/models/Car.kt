@@ -1,7 +1,9 @@
 package models
 
-data class Car(val carMake: String,
-                val carEngine: Int,
-                val carPrice: Int,
-                val isCarAvailable :Boolean){
+data class Car(
+    val carMake: String,
+    val carEngine: Int,
+    val carPrice: String,
+    val isCarAvailable: Boolean
+){
 }
