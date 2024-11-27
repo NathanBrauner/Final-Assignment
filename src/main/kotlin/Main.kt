@@ -4,6 +4,9 @@ import controllers.CarAPI
 import utils.readNextInt
 import utils.readNextLine
 import io.github.oshai.kotlinlogging.KotlinLogging
+import listAllCars
+import listAvailableCars
+import listSoldCars
 import models.Car
 import persistence.JSONSerializer
 import java.io.File
@@ -45,6 +48,8 @@ fun runMenu() {
             2  -> listCars()
             3  -> updateCar()
             4  -> deleteCar()
+            20 -> save()
+            21 -> load()
             0  -> exitApp()
             else -> println("Invalid option entered: $option")
         }
@@ -64,10 +69,32 @@ fun addCar(){
     }
 }
 
-fun listCars(){
-   println(carAPI.listAllCars())
+fun listCars() {
+    if (carAPI.numberOfCars() > 0) {
+        val option = readNextInt(
+            """
+                 > --------------------------------
+                  > |   1) View ALL cars           |
+                  > |   2) View SOLD cars          |
+                  > |   3) View AVAILABLE cars     |
+                  > --------------------------------
+         > ==>> """.trimMargin(">")
+        )
+
+        when (option) {
+            1 -> listAllCars()
+            2 -> listSoldCars()
+            3 -> listAvailableCars()
+            else -> println("Invalid Number Entered: $option")
+        }
+    } else {
+        println("Option Invalid - No Cars Stored")
+    }
 }
 
+fun listAllCars() = println(carAPI.listAllCars())
+fun listSoldCars() = println(carAPI.listSoldCars())
+fun listAvailableCars() = println(carAPI.listAvailableCars())
 
 fun updateCar(){
    //logger.info { "updateCar() function invoked"}
