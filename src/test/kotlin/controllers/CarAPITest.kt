@@ -3,6 +3,7 @@ package controllers
 import models.Car
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -87,6 +88,28 @@ class CarAPITest {
             assertTrue(carsString.contains("Repair Car"))
             assertTrue(carsString.contains("Test Car"))
             assertTrue(carsString.contains("Clean Car"))
+        }
+    }
+
+    @Nested
+    inner class DeleteCars {
+
+        @Test
+        fun `deleting a Car that does not exist, returns null`() {
+            // checks whether the result of the method is null
+            assertNull(soldCars!!.deleteCar(0))
+            assertNull(availableCars!!.deleteCar(-1))
+            assertNull(availableCars!!.deleteCar(5))
+        }
+
+        @Test
+        fun `deleting a car that exists delete and returns deleted object`() {
+            //checks the actual value matches the expected value
+            assertEquals(5, availableCars!!.numberOfCars())
+            assertEquals(cleanCar, availableCars!!.deleteCar(4)) // deleting car at index 4 returns cleanCar
+            assertEquals(4, availableCars!!.numberOfCars())// number of cars is now 4 after deleting
+            assertEquals(serviceCar, availableCars!!.deleteCar(0))// deleting car at index 0 returns serviceCar
+            assertEquals(3, availableCars!!.numberOfCars())// number of cars is now 3 after deleting
         }
     }
 }
