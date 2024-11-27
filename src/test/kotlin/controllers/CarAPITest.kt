@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import persistence.XMLSerializer
+import java.io.File
 
 class CarAPITest {
 
@@ -112,6 +114,45 @@ class CarAPITest {
             assertEquals(3, availableCars!!.numberOfCars())// number of cars is now 3 after deleting
         }
     }
+
+    @Nested
+    inner class PersistenceTests {
+
+    @Test
+    fun `saving and loading an empty collection in XML doesnt crash app`() {
+
+        val storingCars = CarAPI(XMLSerializer(File("cars.xml")))
+        storingCars.store()
+
+        val loadedCars = CarAPI(XMLSerializer(File("cars.xml")))
+        loadedCars.load()
+
+        assertEquals(0, storingCars.numberOfCars())
+        assertEquals(0, loadedCars.numberOfCars())
+        assertEquals(storingCars.numberOfCars(), loadedCars.numberOfCars())
+    }
+
+    @Test
+    fun `saving and loading an loaded collection in XML doesnt loose data`() {
+
+         val storingCars = CarAPI(XMLSerializer(File("cars.xml")))
+         storingCars.add(testCar!!)
+         storingCars.add(cleanCar!!)
+         storingCars.add(testDrive!!)
+         storingCars.store()
+
+         val loadedCars = CarAPI(XMLSerializer(File("cars.xml")))
+         loadedCars.load()
+
+        assertEquals(3, storingCars.numberOfCars())
+        assertEquals(3, loadedCars.numberOfCars())
+        assertEquals(storingCars.numberOfCars(), loadedCars.numberOfCars())
+        assertEquals(storingCars.findCar(0), loadedCars.findCar(0))
+        assertEquals(storingCars.findCar(1), loadedCars.findCar(1))
+        assertEquals(storingCars.findCar(2), loadedCars.findCar(2))
+    }
+
+}
 
 
 
