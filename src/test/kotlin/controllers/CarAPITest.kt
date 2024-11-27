@@ -26,6 +26,7 @@ class CarAPITest {
         testCar =  Car("Testing Car", 6, "80.00", true)
         cleanCar = Car("Cleaning Car", 4, "20.00", true)
 
+        // adding 5 different notes to the car API
         availableCars!!.add(serviceCar!!)
         availableCars!!.add(testDrive!!)
         availableCars!!.add(repairCar!!)
