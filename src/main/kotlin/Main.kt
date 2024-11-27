@@ -5,11 +5,13 @@ import utils.readNextInt
 import utils.readNextLine
 import io.github.oshai.kotlinlogging.KotlinLogging
 import models.Car
+import persistence.XMLSerializer
+import java.io.File
 import kotlin.system.exitProcess
 
 
 private val logger = KotlinLogging.logger {}
-private val carAPI = CarAPI()
+private val carAPI = CarAPI(XMLSerializer(File("cars.xml")))
 
 fun main() {
     runMenu()
@@ -25,7 +27,9 @@ fun mainMenu(): Int {
          > |   2) List all Cars             |
          > |   3) Update a Car              |
          > |   4) Delete a Car              |
-         > ----------------------------------
+         > -------------------------------- |
+         > |   20) Save Cars                |
+         > |   21) Load Cars                |         
          > |   0) Exit                      |
          > ----------------------------------
          > ==>> """.trimMargin(">"))
@@ -96,6 +100,22 @@ fun deleteCar(){
         } else {
             println("Delete Unsuccessful")
         }
+    }
+}
+
+fun save () {
+    try {
+        carAPI.store()
+    } catch (e: Exception) {
+        System.err.println("Error writing to file: $e")
+    }
+}
+
+fun load() {
+    try {
+        carAPI.load()
+    } catch (e: Exception) {
+        System.err.println("Error reading from file: $e")
     }
 }
 

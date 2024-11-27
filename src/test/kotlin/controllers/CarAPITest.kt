@@ -3,7 +3,6 @@ package controllers
 import models.Car
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
@@ -17,8 +16,8 @@ class CarAPITest {
     private var repairCar: Car? = null
     private var testCar: Car? = null
     private var cleanCar: Car? = null
-    private var availableCars: CarAPI? = CarAPI()
-    private var soldCars: CarAPI? = CarAPI()
+    private var availableCars: CarAPI? = CarAPI(XMLSerializer(File("cars.xml")))
+    private var soldCars: CarAPI? = CarAPI(XMLSerializer(File("cars.xml")))
 
     //The method ran before each test
     @BeforeEach

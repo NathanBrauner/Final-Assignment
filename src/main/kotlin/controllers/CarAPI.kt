@@ -1,11 +1,16 @@
 package controllers
 
 import models.Car
+import persistence.Serializer
+import persistence.XMLSerializer
 import kotlin.text.get
 
-class CarAPI {
+class CarAPI(xmlSerializer: XMLSerializer) {
     private var cars = ArrayList<Car>()
 
+    class NoteAPI(serializerType: Serializer){
+
+        private var serializer: Serializer = serializerType
 
 fun add(car: Car): Boolean {
 
@@ -57,6 +62,16 @@ fun updateCar(indexToUpdate: Int, car: Car?): Boolean {
 
     return false
 }
+
+    @Throws(Exception::class)
+    fun load() {
+        cars = serializer.read() as ArrayList<Car>
+    }
+
+    @Throws(Exception::class)
+    fun store() {
+        serializer.write(cars)
+    }
 
 
 
