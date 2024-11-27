@@ -5,13 +5,14 @@ import utils.readNextInt
 import utils.readNextLine
 import io.github.oshai.kotlinlogging.KotlinLogging
 import models.Car
-import persistence.XMLSerializer
+import persistence.JSONSerializer
 import java.io.File
 import kotlin.system.exitProcess
 
 
 private val logger = KotlinLogging.logger {}
-private val carAPI = CarAPI(XMLSerializer(File("cars.xml")))
+//private val carAPI = CarAPI(XMLSerializer(File("cars.xml")))
+private val carAPI = CarAPI(JSONSerializer(File("cars.json")))
 
 fun main() {
     runMenu()

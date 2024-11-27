@@ -1,11 +1,11 @@
 package controllers
 
 import models.Car
+import persistence.JSONSerializer
 import persistence.Serializer
-import persistence.XMLSerializer
 import kotlin.text.get
 
-class CarAPI(xmlSerializer: XMLSerializer) {
+class CarAPI(xmlSerializer: JSONSerializer) {
     private var cars = ArrayList<Car>()
 
     class NoteAPI(serializerType: Serializer){
