@@ -17,11 +17,12 @@ fun listAllCars(): String {
         "No Cars Stored"
     } else {
         var listOfCars = ""
-        for(i in cars.indices) {
+        for (i in cars.indices) {
             listOfCars += "${i}: ${cars[i]} \n"
         }
         listOfCars
     }
+}
 
     fun numberOfCars(): Int{
         return cars.size
@@ -43,4 +44,19 @@ fun deleteNote(indexToDelete: Int): Car? {
         cars.removeAt(indexToDelete)
     } else null
 }
+
+fun updateCar(indexToUpdate: Int, car: Car?): Boolean {
+    val foundCar = findCar(indexToUpdate)
+
+    if ((foundCar != null) && (car != null)) {
+        foundCar.carMake = car.carMake
+        foundCar.carEngine = car.carEngine
+        foundCar.carPrice = car.carPrice
+        return true
+    }
+
+    return false
+}
+
+
 

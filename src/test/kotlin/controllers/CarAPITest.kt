@@ -3,6 +3,7 @@ package controllers
 import models.Car
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
@@ -112,8 +113,6 @@ class CarAPITest {
             assertEquals(3, availableCars!!.numberOfCars())// number of cars is now 3 after deleting
         }
     }
-}
-
 
 
 
