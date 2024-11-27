@@ -29,9 +29,15 @@ class CarAPI(xmlSerializer: JSONSerializer) {
             }
         }
 
-        fun numberOfCars(): Int {
-            return cars.size
+        fun numberOfSoldCars(): Int {
+           return cars.stream()
+               .filter{car: Car -> !car.isCarAvailable}
         }
+
+        fun numberOfAvailableCars(): Int {
+            return cars.stream()
+                .filter{car: Car -> !car.isCarAvailable}
+    }
 
         fun findCar(index: Int): Car? {
             return if (isValidListIndex(index, cars)) {
