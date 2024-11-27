@@ -65,7 +65,24 @@ fun listCars(){
 
 
 fun updateCar(){
-   logger.info { "updateCar() function invoked"}
+   //logger.info { "updateCar() function invoked"}
+    listCars()
+    if (carAPI.numberOfCars() > 0) {
+        val indexToUpdate = readNextInt("Enter the index of the car to Update: ")
+        if (carAPI.isValidListIndex(indexToUpdate)) {
+            val carMake = readNextLine("Enter the make for the car: ")
+            val carEngine = readNextInt("Enter the size of the engine: ")
+            val carPrice = readNextLine("Enter the price of the car: ")
+
+            if (carAPI.updateCar(indexToUpdate, Car(carMake, carEngine, carPrice, false))){
+                println("Update was successful")
+            } else {
+                println("Update has Failed")
+            }
+        } else {
+            println("There are no cars for this index number")
+        }
+    }
 }
 
 fun deleteCar(){
