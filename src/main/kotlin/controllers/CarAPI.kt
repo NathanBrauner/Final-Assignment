@@ -5,14 +5,15 @@ import kotlin.text.get
 
 class CarAPI {
     private var cars = ArrayList<Car>()
-}
+
 
 fun add(car: Car): Boolean {
+
     return cars.add(car)
 }
 
 fun listAllCars(): String {
-    return if (cars.isEmpty()) {
+    return if (cars.isEmpty) {
         "No Cars Stored"
     } else {
         var listOfCars = ""
@@ -35,4 +36,11 @@ fun listAllCars(): String {
     fun isValidListIndex(index: Int, list: List<Any>): Boolean {
         return (index >= 0 && index < list.size)
     }
+
+
+fun deleteNote(indexToDelete: Int): Car? {
+    return if (isValidListIndex(indexToDelete, cars)) {
+        cars.removeAt(indexToDelete)
+    } else null
 }
+

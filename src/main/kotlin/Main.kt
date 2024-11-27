@@ -63,12 +63,23 @@ fun listCars(){
    println(carAPI.listAllCars())
 }
 
+
 fun updateCar(){
    logger.info { "updateCar() function invoked"}
 }
 
 fun deleteCar(){
-    logger.info { "deleteCar() function invoked" }
+    //logger.info { "deleteCar() function invoked" }
+    listCars()
+    if(carAPI.numberOfCars() > 0) {
+        val indexToDelete = readNextInt("Enter the index of the car to delete: ")
+        val carToDelete = carAPI.deleteCar(indexToDelete)
+        if (carToDelete != null) {
+            println("Delete Successful! Deleted Car: ${carToDelete.carMake}")
+        } else {
+            println("Delete Unsuccessful")
+        }
+    }
 }
 
 fun exitApp(){
