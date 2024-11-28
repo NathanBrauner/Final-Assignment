@@ -3,6 +3,7 @@ package controllers
 import models.Car
 import persistence.JSONSerializer
 import persistence.Serializer
+import utils.isValidListIndex
 import kotlin.text.get
 
 class CarAPI(xmlSerializer: JSONSerializer) {
@@ -22,15 +23,9 @@ class CarAPI(xmlSerializer: JSONSerializer) {
             else cars.joinToString (seperator = "\n") { car ->
                 cars.indexOf(car).toString() + ": " + car.toString()
 
-        fun numberOfSoldCars(): Int {
-           return cars.stream()
-               .filter{car: Car -> !car.isCarAvailable}
-        }
+       fun numberOfSoldCars(): Int = cars.count { car: Car -> car.isCarAvailable}
 
-        fun numberOfAvailableCars(): Int {
-            return cars.stream()
-                .filter{car: Car -> !car.isCarAvailable}
-    }
+        fun numberOfAvailableCars(): Int = cars.count { car: Car -> car.isCarAvailable}
 
         fun findCar(index: Int): Car? {
             return if (isValidListIndex(index, cars)) {
@@ -74,5 +69,13 @@ class CarAPI(xmlSerializer: JSONSerializer) {
 
     }
 
+        private fun formatListString(carsToFormat : List<Car>) : String =
+            carsToFormat
+                .joinToString (seperator = "\n") { car ->
+                    cars.indexOf(car).toString() + ": " + car.toString() }
+
+        fun searchByMake (searchString : String) =
+            formatListString(
+                cars.filter { car -> car.carMake.contains(searchString, ignoreCase = true) })
 
 
