@@ -17,17 +17,10 @@ class CarAPI(xmlSerializer: JSONSerializer) {
             return cars.add(car)
         }
 
-        fun listAllCars(): String {
-            return if (cars.isEmpty) {
-                "No Cars Stored"
-            } else {
-                var listOfCars = ""
-                for (i in cars.indices) {
-                    listOfCars += "${i}: ${cars[i]} \n"
-                }
-                listOfCars
-            }
-        }
+        fun listAllCars(): String =
+            if (cars.isEmpty()) "No Cars Stored"
+            else cars.joinToString (seperator = "\n") { car ->
+                cars.indexOf(car).toString() + ": " + car.toString()
 
         fun numberOfSoldCars(): Int {
            return cars.stream()
