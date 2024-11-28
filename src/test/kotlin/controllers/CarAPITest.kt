@@ -2,9 +2,7 @@ package controllers
 
 import models.Car
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNull
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -85,12 +83,12 @@ class CarAPITest {
         @Test
         fun `listAllCars returns Cars when ArrayList has cars stored`() {
             assertEquals(5, availableCars!!.numberOfCars())
-            val carsString = availableCars!!.listAllCars().lowercase
-            assertTrue(carsString.contains("Service Car"))
-            assertTrue(carsString.contains("Test Drive"))
-            assertTrue(carsString.contains("Repair Car"))
-            assertTrue(carsString.contains("Test Car"))
-            assertTrue(carsString.contains("Clean Car"))
+            val carsString = availableCars!!.listAllCars().lowercase()
+            assertTrue(carsString.contains("service Car"))
+            assertTrue(carsString.contains("test Drive"))
+            assertTrue(carsString.contains("repair Car"))
+            assertTrue(carsString.contains("test Car"))
+            assertTrue(carsString.contains("clean Car"))
         }
     }
 

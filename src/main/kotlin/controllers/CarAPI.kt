@@ -1,25 +1,26 @@
 package controllers
 
 import models.Car
-import persistence.JSONSerializer
 import persistence.Serializer
 import utils.isValidListIndex
-import kotlin.text.get
 
-class CarAPI(xmlSerializer: JSONSerializer) {
+
+class CarAPI(serializerType: Serializer) {
+
+    private var serializer: Serializer = serializerType
     private var cars = ArrayList<Car>()
 
-    class NoteAPI(serializerType: Serializer) {
 
-        private var serializer: Serializer = serializerType
 
-        fun add(car: Car): Boolean {
+
+
+    fun add(car: Car): Boolean {
 
             return cars.add(car)
         }
 
         fun listAllCars(): String =
-            if (cars.isEmpty()) "No Cars Stored"
+            if (cars.isEmpty) "No Cars Stored"
             else cars.joinToString (seperator = "\n") { car ->
                 cars.indexOf(car).toString() + ": " + car.toString()
 
@@ -57,25 +58,24 @@ class CarAPI(xmlSerializer: JSONSerializer) {
             return false
         }
 
-        @Throws(Exception::class)
-        fun load() {
-            cars = serializer.read() as ArrayList<Car>
-        }
+                @Throws(Exception::class)
+                fun load() {
+                    cars = serializer.read() as ArrayList<Car>
+                }
 
-        @Throws(Exception::class)
-        fun store() {
-            serializer.write(cars)
-        }
+                @Throws(Exception::class)
+                fun store() {
+                    serializer.write(cars)
+                }
 
-    }
 
-        private fun formatListString(carsToFormat : List<Car>) : String =
-            carsToFormat
-                .joinToString (seperator = "\n") { car ->
-                    cars.indexOf(car).toString() + ": " + car.toString() }
+                private fun formatListString(carsToFormat : List<Car>) : String =
+                    carsToFormat
+                        .joinToString (separator = "\n") { car ->
+                            cars.indexOf(car).toString() + ": " + car.toString() }
 
-        fun searchByMake (searchString : String) =
-            formatListString(
-                cars.filter { car -> car.carMake.contains(searchString, ignoreCase = true) })
+            }
+
+
 
 
