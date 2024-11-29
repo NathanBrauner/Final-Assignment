@@ -31,6 +31,7 @@ fun mainMenu(): Int {
          > |   2) List all Cars             |
          > |   3) Update a Car              |
          > |   4) Delete a Car              |
+         > |   5) Search a Car              |
          > -------------------------------- |
          > |   20) Save Cars                |
          > |   21) Load Cars                |         
@@ -48,6 +49,7 @@ fun runMenu() {
             2  -> listCars()
             3  -> updateCar()
             4  -> deleteCar()
+            5 -> searchCars()
             20 -> save()
             21 -> load()
             0  -> exitApp()
@@ -70,6 +72,7 @@ fun addCar(){
 }
 
 fun listCars() {
+
     if (carAPI.numberOfCars() > 0) {
         val option = readNextInt(
             """
@@ -128,6 +131,16 @@ fun deleteCar(){
         } else {
             println("Delete Unsuccessful")
         }
+    }
+}
+
+fun searchCars() {
+    val searchMake = readNextLine("Enter the make of the car: ")
+    val searchResults = carAPI.searchByMake(searchMake)
+    if (searchResults.isEmpty()) {
+        println("No cars found")
+    } else {
+        println(searchResults)
     }
 }
 

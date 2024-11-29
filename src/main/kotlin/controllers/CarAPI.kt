@@ -1,8 +1,7 @@
 package controllers
 
-import models.Car
-import persistence.Serializer
-import utils.isValidListIndex
+
+
 
 
 class CarAPI(serializerType: Serializer) {
@@ -20,9 +19,10 @@ class CarAPI(serializerType: Serializer) {
         }
 
         fun listAllCars(): String =
-            if (cars.isEmpty) "No Cars Stored"
-            else cars.joinToString (seperator = "\n") { car ->
+            if (cars.isEmpty()) "No Cars Stored"
+            else cars.joinToString (separator = "\n") { car ->
                 cars.indexOf(car).toString() + ": " + car.toString()
+            }
 
        fun numberOfSoldCars(): Int = cars.count { car: Car -> car.isCarAvailable}
 

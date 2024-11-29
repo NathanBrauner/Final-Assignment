@@ -51,7 +51,6 @@ class CarAPITest {
 
     @Nested
     inner class AddCars {
-
         @Test
         fun `adding a Car to an available list adds to ArrayList`() {
             val newCar = Car("Checking Tyre Pressure", 2, "25.00", true)
