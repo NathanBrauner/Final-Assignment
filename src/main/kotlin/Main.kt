@@ -1,14 +1,11 @@
 
 
 import controllers.CarAPI
-import utils.readNextInt
-import utils.readNextLine
 import io.github.oshai.kotlinlogging.KotlinLogging
-import listAllCars
-import listAvailableCars
-import listSoldCars
 import models.Car
 import persistence.JSONSerializer
+import utils.readNextInt
+import utils.readNextLine
 import java.io.File
 import kotlin.system.exitProcess
 
@@ -19,6 +16,9 @@ private val carAPI = CarAPI(JSONSerializer(File("cars.json")))
 
 fun main() {
     runMenu()
+    listAllCars()
+    listSoldCars()
+    listAvailableCars()
 }
 
 fun mainMenu(): Int {
@@ -32,6 +32,7 @@ fun mainMenu(): Int {
          > |   3) Update a Car              |
          > |   4) Delete a Car              |
          > |   5) Search a Car              |
+         > |   6) Book a Service            |
          > -------------------------------- |
          > |   20) Save Cars                |
          > |   21) Load Cars                |         
@@ -50,6 +51,7 @@ fun runMenu() {
             3  -> updateCar()
             4  -> deleteCar()
             5 -> searchCars()
+            6 -> bookService()
             20 -> save()
             21 -> load()
             0  -> exitApp()
@@ -60,14 +62,33 @@ fun runMenu() {
 
 fun addCar(){
     val carMake = readNextLine("Enter the make for the car: ")
+    val carModel = readNextLine("Enter the model for the car: ")
     val carEngine = readNextInt("Enter the size of the engine:  ")
     val carPrice = readNextLine("Enter a price for the car: ")
-    val isAdded = carAPI.add(Car(carMake, carEngine, carPrice, false))
+    val dateOfService = readNextLine("Enter the date of service:")
+    val carYear = readNextInt("Enter the year of the car: ")
+    val isAdded = carAPI.add(Car(carMake, carModel, carEngine, carPrice, dateOfService, carYear.toString(), false))
 
     if (isAdded) {
         println("Added Successfully")
     } else {
         println("Add Failed")
+    }
+}
+
+fun bookService(){
+    val carMake = readNextLine("Enter the make of the car: ")
+    val carModel = readNextLine("Enter the model for the car: ")
+    val carEngine = readNextInt("Enter the engine size of the car: ")
+    val carPrice = readNextLine("Enter the price of the car: ")
+    val dateOfService = readNextLine("Enter the date for your service: ")
+    val carYear = readNextInt("Enter the year of the car: ")
+    val isAdded = carAPI.add(Car(carMake, carModel, carEngine, carPrice, dateOfService, carYear.toString(), true))
+
+    if (isAdded) {
+        println("Your service is booked, thank you!!")
+    } else {
+        println("Your booking has been unsuccessful")
     }
 }
 
@@ -95,21 +116,33 @@ fun listCars() {
     }
 }
 
-fun listAllCars() = println(carAPI.listAllCars())
-fun listSoldCars() = println(carAPI.listSoldCars())
-fun listAvailableCars() = println(carAPI.listAvailableCars())
+fun listAllCars() = {
+    println(carAPI.listAllCars())
+}
+fun listAvailableCars() {
+    println(carAPI.listAvailableCars())
+}
+fun listSoldCars() {
+    println(carAPI.listSoldCars())
+}
+
+
 
 fun updateCar(){
    //logger.info { "updateCar() function invoked"}
     listCars()
     if (carAPI.numberOfCars() > 0) {
         val indexToUpdate = readNextInt("Enter the index of the car to Update: ")
-        if (carAPI.isValidListIndex(indexToUpdate)) {
+        if (carAPI.isValidIndex(indexToUpdate)) {
             val carMake = readNextLine("Enter the make for the car: ")
+            val carModel = readNextLine("Enter the model for the car: ")
             val carEngine = readNextInt("Enter the size of the engine: ")
             val carPrice = readNextLine("Enter the price of the car: ")
+            val dateOfService = readNextLine("Enter the date for your service: ")
+            val carYear = readNextInt("Enter the Year of the car: ")
 
-            if (carAPI.updateCar(indexToUpdate, Car(carMake, carEngine, carPrice, false))){
+            if (carAPI.updateCar(indexToUpdate, Car(carMake, carModel, carEngine, carPrice, dateOfService,
+                    carYear.toString(), false))){
                 println("Update was successful")
             } else {
                 println("Update has Failed")
@@ -121,13 +154,12 @@ fun updateCar(){
 }
 
 fun deleteCar(){
-    //logger.info { "deleteCar() function invoked" }
     listCars()
     if(carAPI.numberOfCars() > 0) {
         val indexToDelete = readNextInt("Enter the index of the car to delete: ")
         val carToDelete = carAPI.deleteCar(indexToDelete)
         if (carToDelete != null) {
-            println("Delete Successful! Deleted Car: ${carToDelete.carMake}")
+            println("Delete Successful! Deleted Car: $carToDelete")
         } else {
             println("Delete Unsuccessful")
         }
@@ -143,6 +175,11 @@ fun searchCars() {
         println(searchResults)
     }
 }
+
+private fun Unit.isEmpty(): Boolean {
+    TODO("Not yet implemented")
+}
+
 
 fun save () {
     try {

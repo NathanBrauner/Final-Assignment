@@ -23,13 +23,14 @@ class CarAPITest {
     //The method ran before each test
     @BeforeEach
     fun setup() {
-        serviceCar = Car("Servicing Car", 1, "125.00", false)
-        testDrive = Car("Test Driving Car Before Purchase", 2, "10.00", true)
-        repairCar = Car("Repair Car", 3, "50.00", true)
-        testCar = Car("Testing Car", 6, "80.00", true)
-        cleanCar = Car("Cleaning Car", 4, "20.00", true)
+        serviceCar = Car("Servicing Car", "Toyota Yaris", 1, "125.00", 2010.toString(), "2024-12-06", false)
+        testDrive = Car("Test Driving Car Before Purchase", "Ford Focus", 2, "10.00",
+            2014.toString(), "2024-12-10", true)
+        repairCar = Car("Repair Car", "Volkswagen GTI" , 3, "50.00", 2020.toString(), "2024-12-20", true)
+        testCar = Car("Testing Car", "Nissan Micra", 6, "80.00", 2005.toString(), "2024-12-28",true)
+        cleanCar = Car("Cleaning Car", "Ford Fiesta",  4, "20.00", 2014.toString(), "2024-12-29", true)
 
-        // adding 5 different notes to the car API
+        // adding 5 different cars to the car API
         availableCars!!.add(serviceCar!!)
         availableCars!!.add(testDrive!!)
         availableCars!!.add(repairCar!!)
@@ -53,7 +54,7 @@ class CarAPITest {
     inner class AddCars {
         @Test
         fun `adding a Car to an available list adds to ArrayList`() {
-            val newCar = Car("Checking Tyre Pressure", 2, "25.00", true)
+            val newCar = Car("Checking Tyre Pressure", "Toyota Corolla", 2, "25.00", 2012.toString(), "2024-12-29", true)
             assertEquals(5, availableCars!!.numberOfCars())
             assertTrue(availableCars!!.add(newCar))
             assertEquals(6, availableCars!!.numberOfCars())
@@ -62,7 +63,7 @@ class CarAPITest {
 
         @Test
         fun `adding a Car to an sold list adds to ArrayList`() {
-            val newCar = Car("Checking Tyre Pressure", 2, "25.00", true)
+            val newCar = Car("Checking Tyre Pressure", "Toyota Corolla", 2, "25.00", 2012.toString(), "2024-12-16", true)
             assertEquals(0, soldCars!!.numberOfCars())
             assertTrue(soldCars!!.add(newCar))
             assertEquals(1, soldCars!!.numberOfCars())

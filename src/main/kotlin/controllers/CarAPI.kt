@@ -1,7 +1,7 @@
 package controllers
 
-
-
+import models.Car
+import persistence.Serializer
 
 
 class CarAPI(serializerType: Serializer) {
@@ -23,10 +23,11 @@ class CarAPI(serializerType: Serializer) {
             else cars.joinToString (separator = "\n") { car ->
                 cars.indexOf(car).toString() + ": " + car.toString()
             }
+    fun numberOfCars(): Int = cars.count { car: Car -> car.isCarAvailable}
 
-       fun numberOfSoldCars(): Int = cars.count { car: Car -> car.isCarAvailable}
+       fun listSoldCars(): Int = cars.count { car: Car -> car.isCarAvailable}
 
-        fun numberOfAvailableCars(): Int = cars.count { car: Car -> car.isCarAvailable}
+        fun listAvailableCars(): Int = cars.count { car: Car -> car.isCarAvailable}
 
         fun findCar(index: Int): Car? {
             return if (isValidListIndex(index, cars)) {
@@ -38,12 +39,19 @@ class CarAPI(serializerType: Serializer) {
             return (index >= 0 && index < list.size)
         }
 
+    fun isValidIndex(index: Int) :Boolean{
+        return isValidListIndex(index, cars);
+    }
 
-        fun deleteNote(indexToDelete: Int): Car? {
+        fun deleteCar(indexToDelete: Int): Car? {
             return if (isValidListIndex(indexToDelete, cars)) {
                 cars.removeAt(indexToDelete)
             } else null
         }
+
+    fun searchByMake(searchMake: String) {
+
+    }
 
         fun updateCar(indexToUpdate: Int, car: Car?): Boolean {
             val foundCar = findCar(indexToUpdate)
@@ -60,7 +68,7 @@ class CarAPI(serializerType: Serializer) {
 
                 @Throws(Exception::class)
                 fun load() {
-                    cars = serializer.read() as ArrayList<Car>
+                    cars = serializer.read() as ArrayList<*> as java.util.ArrayList<Car>
                 }
 
                 @Throws(Exception::class)
