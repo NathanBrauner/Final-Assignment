@@ -1,5 +1,13 @@
 package controllers
 
+/**
+ * Unit tests for the [CarAPI] class, focusing on car management operations.
+ *
+ * This test class includes multiple unit tests that cover functionality such as adding,
+ * deleting, listing cars, and saving/loading car data in both XML and JSON formats.
+ * The [CarAPI] instance is tested with different operations to ensure correctness of
+ * serialization and deserialization processes as well as the integrity of the data.
+ */
 import models.Car
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.*
@@ -12,17 +20,25 @@ import java.io.File
 
 class CarAPITest {
 
+    // Test cars used in the test cases.
     private var serviceCar: Car? = null
     private var testDrive: Car? = null
     private var repairCar: Car? = null
     private var testCar: Car? = null
     private var cleanCar: Car? = null
+    // CarAPI instances for testing, one for available cars and another for sold cars.
     private var availableCars: CarAPI? = CarAPI(XMLSerializer(File("cars.xml")))
     private var soldCars: CarAPI? = CarAPI(XMLSerializer(File("cars.xml")))
 
-    //The method ran before each test
+    /**
+     * Set up the test resources before each test method.
+     *
+     * This method is executed before each test to initialize cars and add them to
+     * the [availableCars] collection. It ensures the test setup is consistent for each test.
+     */
     @BeforeEach
     fun setup() {
+        // Initialize cars with test data
         serviceCar = Car("Servicing Car", "Toyota Yaris", 1, "125.00", 2010.toString(), "2024-12-06", false)
         testDrive = Car("Test Driving Car Before Purchase", "Ford Focus", 2, "10.00",
             2014.toString(), "2024-12-10", true)
@@ -30,7 +46,7 @@ class CarAPITest {
         testCar = Car("Testing Car", "Nissan Micra", 6, "80.00", 2005.toString(), "2024-12-28",true)
         cleanCar = Car("Cleaning Car", "Ford Fiesta",  4, "20.00", 2014.toString(), "2024-12-29", true)
 
-        // adding 5 different cars to the car API
+        // adding 5 different cars to the available cars collection
         availableCars!!.add(serviceCar!!)
         availableCars!!.add(testDrive!!)
         availableCars!!.add(repairCar!!)
@@ -38,9 +54,15 @@ class CarAPITest {
         availableCars!!.add(cleanCar!!)
     }
 
-    //The method ran after each test
+    /**
+     * Clean up test resources after each test method.
+     *
+     * This method is executed after each test to clear any test-specific resources,
+     * ensuring a clean state for subsequent tests.
+     */
     @AfterEach
     fun tearDown() {
+        // Clear references to test cars and collections
         serviceCar = null
         testDrive = null
         repairCar = null
@@ -50,8 +72,17 @@ class CarAPITest {
         soldCars = null
     }
 
+    // Nested class for tests related to adding cars.
     @Nested
     inner class AddCars {
+
+        /**
+         * Test for adding a car to the available cars collection.
+         *
+         * This test ensures that adding a new car to the [availableCars] collection
+         * successfully increases the number of cars, and the added car can be retrieved
+         * by its index.
+         */
         @Test
         fun `adding a Car to an available list adds to ArrayList`() {
             val newCar = Car("Checking Tyre Pressure", "Toyota Corolla", 2, "25.00", 2012.toString(), "2024-12-29", true)
@@ -61,6 +92,12 @@ class CarAPITest {
             assertEquals(newCar, availableCars!!.findCar(availableCars!!.numberOfCars() - 1))
         }
 
+        /**
+         * Test for adding a car to the sold cars collection.
+         *
+         * This test ensures that adding a new car to the [soldCars] collection
+         * successfully increases the number of cars in that collection as well.
+         */
         @Test
         fun `adding a Car to an sold list adds to ArrayList`() {
             val newCar = Car("Checking Tyre Pressure", "Toyota Corolla", 2, "25.00", 2012.toString(), "2024-12-16", true)
@@ -71,15 +108,28 @@ class CarAPITest {
         }
     }
 
+    // Nested class for tests related to listing cars.
     @Nested
     inner class ListCars {
 
+        /**
+         * Test for listing cars when the collection is empty.
+         *
+         * This test ensures that when no cars are stored in the [soldCars] collection,
+         * a message indicating that no cars are available is returned.
+         */
         @Test
         fun `listAllCars returns No Cars Stored message when ArrayList is empty`() {
             assertEquals(0, soldCars!!.numberOfCars())
             assertTrue(soldCars!!.listAllCars().lowercase().contains("no cars"))
         }
 
+        /**
+         * Test for listing cars when the collection has cars stored.
+         *
+         * This test checks if all cars in the [availableCars] collection are listed
+         * correctly by checking the car names and ensuring they are included in the output.
+         */
         @Test
         fun `listAllCars returns Cars when ArrayList has cars stored`() {
             assertEquals(5, availableCars!!.numberOfCars())
@@ -92,9 +142,15 @@ class CarAPITest {
         }
     }
 
+    // Nested class for tests related to deleting cars.
     @Nested
     inner class DeleteCars {
 
+        /**
+         * Test for attempting to delete a car that does not exist.
+         *
+         * This test verifies that when an invalid index is provided, the method returns `null`.
+         */
         @Test
         fun `deleting a Car that does not exist, returns null`() {
             // checks whether the result of the method is null
@@ -103,6 +159,12 @@ class CarAPITest {
             assertNull(availableCars!!.deleteCar(5))
         }
 
+        /**
+         * Test for successfully deleting a car that exists in the collection.
+         *
+         * This test ensures that when a valid car is deleted, it is correctly removed
+         * from the collection and the number of cars is updated accordingly.
+         */
         @Test
         fun `deleting a car that exists delete and returns deleted object`() {
             //checks the actual value matches the expected value
@@ -114,9 +176,16 @@ class CarAPITest {
         }
     }
 
+    // Nested class for persistence tests (saving/loading).
     @Nested
     inner class PersistenceTests {
 
+        /**
+         * Test for saving and loading an empty collection using XML format.
+         *
+         * This test ensures that when an empty collection is saved and loaded, the
+         * application does not crash, and the loaded collection remains empty.
+         */
         @Test
         fun `saving and loading an empty collection in XML doesnt crash app`() {
 
@@ -131,6 +200,12 @@ class CarAPITest {
             assertEquals(storingCars.numberOfCars(), loadedCars.numberOfCars())
         }
 
+        /**
+         * Test for saving and loading a collection using XML format without losing data.
+         *
+         * This test verifies that after saving and loading a collection of cars, the
+         * cars are retained correctly in the loaded collection.
+         */
         @Test
         fun `saving and loading an loaded collection in XML doesnt loose data`() {
 
@@ -152,7 +227,12 @@ class CarAPITest {
         }
     }
 
-
+    /**
+     * Test for saving and loading an empty collection using JSON format.
+     *
+     * This test ensures that when an empty collection is saved and loaded, the
+     * application does not crash, and the loaded collection remains empty.
+     */
     @Test
     fun `saving and loading an empty collection in JSON doesn't crash app`() {
         // Saving an empty cars.json file.
@@ -169,6 +249,12 @@ class CarAPITest {
         assertEquals(storingCars.numberOfCars(), loadedCars.numberOfCars())
     }
 
+    /**
+     * Test for saving and loading a collection using JSON format without losing data.
+     *
+     * This test verifies that after saving and loading a collection of cars, the
+     * cars are retained correctly in the loaded collection.
+     */
     @Test
     fun `saving and loading an loaded collection in JSON doesn't loose data`() {
         // Storing 3 cars to the cars.json file.
